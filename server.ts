@@ -29,49 +29,51 @@ export function app(): express.Express {
     index: 'index.html',
   }));
 
-    const transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     service: 'gmail', // You can change this to 'hotmail', 'outlook', etc., or an SMTP server
     auth: {
       user: process.env['EMAIL_USER'], // Your email from .env
       pass: process.env['EMAIL_PASS']  // Your app password from .env
     }
-    });
+  });
 
   // --- Start of Email Sending API Endpoint ---
-  server.post('/api/inquiry', async (req, res) => {
-    const { name, email, message } = req.body;
+  // server.post('/api/inquiry', async (req, res) => {
+  //   const { name, email, message } = req.body;
 
-    // Basic server-side validation
-    if (!name || !email || !message) {
-      return res.status(400).json({ error: 'Name, email, and message are required fields.' });
-    }
+  //   // Basic server-side validation
+  //   if (!name || !email || !message) {
+  //     return res.status(400).json({ error: 'Name, email, and message are required fields.' });
+  //   }
 
-    // You can add more robust email validation here if needed
-    if (!/\S+@\S+\.\S+/.test(email)) {
-        return res.status(400).json({ error: 'Please enter a valid email address.' });
-    }
+  //   // Simple email format validation
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   if (!emailRegex.test(email)) {
+  //     return res.status(400).json({ error: 'Please enter a valid email address.' });
+  //   }
 
-    const mailOptions = {
-      from: `"${name}" <${email}>`, // Sender will appear as "John Doe <john@example.com>"
-      to: 'sunilsanghadiya.developer@gmail.com', // **THIS IS YOUR EMAIL ADDRESS WHERE YOU WANT TO RECEIVE MESSAGES**
-      subject: `New Inquiry from ${name}`,
-      html: `
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-      `
-    };
+  //   const mailOptions = {
+  //     from: `"${name}" <${email}>`,
+  //     to: 'sunilsanghadiya.developer@gmail.com',
+  //     subject: `New Inquiry from ${name}`,
+  //     html: `
+  //     <p><strong>Name:</strong> ${name}</p>
+  //     <p><strong>Email:</strong> ${email}</p>
+  //     <p><strong>Message:</strong></p>
+  //     <p>${message.replace(/\n/g, '<br>')}</p>
+  //   `
+  //   };
 
-    try {
-      await transporter.sendMail(mailOptions);
-      console.log(`Inquiry email sent from ${name} (${email})`);
-      res.status(200).json({ message: 'Your inquiry has been sent successfully!' });
-    } catch (error) {
-      console.error('Error sending inquiry email:', error);
-      res.status(500).json({ error: 'Failed to send your inquiry. Please try again later.' });
-    }
-  });
+  //   try {
+  //     await transporter.sendMail(mailOptions);
+  //     console.log(`Inquiry email sent from ${name} (${email})`);
+  //     res.status(200).json({ message: 'Your inquiry has been sent successfully!' });
+  //   } catch (error) {
+  //     console.error('Error sending inquiry email:', error);
+  //     res.status(500).json({ error: 'Failed to send your inquiry. Please try again later.' });
+  //   }
+  // });
+
   // --- END: Your Email Sending API Endpoint ---
 
   // All regular routes use the Angular engine

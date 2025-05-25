@@ -1,0 +1,88 @@
+<div class="portfolio-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="name-title">{{ portfolio.name }}</h1>
+                <p class="subtitle">{{ portfolio.title }}</p>
+                <button class="cta-button" (click)="scrollToSection('projects')">
+                    View My Work
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <h2 class="section-title">My Projects</h2>
+            <div class="projects-grid">
+                @for(project of portfolio.projects; track project?.name) {
+                <div class="project-card" (click)="openProject(project)">
+                    <h3 class="project-title">{{ project.name }}</h3>
+                    <p class="project-description">{{ project.description }}</p>
+                    <div class="project-tech">
+                        @for(tech of project.technologies; track $index) {
+                        <span class="tech-tag">
+                            {{ tech }}
+                        </span>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="emojiArcher"> 🏹 </div>
+            <div class="contact-content">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="subtitle">Let's work together on something amazing!</p>
+
+                <form [formGroup]="inqueryForm" class="contact-form" (ngSubmit)="submitForm()">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required formControlName="name">
+                        @if(inqueryForm.controls['name'].invalid && inqueryForm.controls['name'].touched) {
+                        <div class="error-message"> Name is required </div>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required email formControlName="email">
+                        @if(inqueryForm.controls['email'].invalid && inqueryForm.controls['email'].touched) {
+                        <div class="error-message">
+                            Please enter a valid email
+                        </div>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" required formControlName="message"></textarea>
+                        @if(inqueryForm.controls['message'].invalid && inqueryForm.controls['message'].touched) {
+                        <div class="error-message">
+                            Message is required
+                        </div>
+                        }
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        Send Message
+                    </button>
+                </form>
+
+                <div class="social-links">
+                    <a href="https://github.com/sunilsanghadiya" class="social-link" target="_blank">GitHub</a>
+                    <a href="https://linkedin.com/in/sunilsanghadiya" class="social-link" target="_blank">LinkedIn</a>
+                    <a href="https://twitter.com/sunilsanghadiya" class="social-link" target="_blank">Twitter</a>
+                    <a href="mailto:sunilsanghadiya.developer@gmail.com" class="social-link" (click)="onEmail()">Email</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
